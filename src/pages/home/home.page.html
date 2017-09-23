@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Home Page</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h1>Current User</h1>
+  Email: {{this.authService.authUser?.email}}<br>
+  Id: {{this.authService.authUser?.id}}<br>
+  <p>
+    <button ion-button (click)="doLogout()">LOGOUT</button>
+  </p>
+</ion-content>

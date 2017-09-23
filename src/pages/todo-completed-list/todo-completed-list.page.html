@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button
+            menuToggle
+            icon-only>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Completed Todos</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <tja-todo-completed-list [data]="data$ | async"
+                           (editItem)="editItem($event)"
+                           (toggleCompleteItem)="toggleCompleteItem($event)"></tja-todo-completed-list>
+</ion-content>

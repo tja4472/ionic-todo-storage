@@ -1,0 +1,31 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button
+                menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-buttons end>
+            <button ion-button
+                    icon-only
+                    (click)="presentPopover($event)">
+            <ion-icon name="more"></ion-icon>
+        </button>
+        </ion-buttons>
+        <ion-title>Current Todos Page</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <tja-todo-list [todos]="todos$ | async"
+                           (addItem)="addItem()"
+                           (toggleCompleteItem)="toggleCompleteItem($event)"
+                           (editItem)="editItem($event)"
+                           (reorderItems)="reorderItems($event)"
+                           (removeItem)="removeItem($event)"></tja-todo-list>
+
+    <!-- 
+    <p>
+        {{ todos$ | async | json}}
+    </p>
+-->
+</ion-content>
