@@ -4,19 +4,11 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Events, MenuController, Nav, Platform } from 'ionic-angular';
 
-import { SignedInUser } from '../models/signed-in-user.model';
-
 import { HomePage } from '../pages/home/home.page';
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
-import { RegisterPage } from '../pages/register/register.page';
-import { SignInPage } from '../pages/sign-in/sign-in.page';
 import { TodoCompletedListPage } from '../pages/todo-completed-list/todo-completed-list.page';
 import { TodoListPage } from '../pages/todo-list/todo-list.page';
-
-import { AuthService } from '../services/auth.service';
-import { CompletedTodoService } from '../services/completed-todo.service';
-import { CurrentTodoService } from '../services/current-todo.service';
 
 export interface IPageInterface {
   title: string;
@@ -46,12 +38,9 @@ export class MyApp implements OnInit {
   loggedInPages: IPageInterface[] = [
     { title: 'Current Todos Page', component: TodoListPage, icon: 'calendar' },
     { title: 'Completed Todos Page', component: TodoCompletedListPage, icon: 'calendar' },
-    { title: 'Sign Out', component: Page1, icon: 'log-out', logsOut: true }
   ];
 
   loggedOutPages: IPageInterface[] = [
-    { title: 'Sign In', component: SignInPage, icon: 'log-in' },
-    { title: 'Register', component: RegisterPage, icon: 'person-add' },
   ];
 
   rootPage: any; // = Page1;
@@ -64,13 +53,9 @@ export class MyApp implements OnInit {
   constructor(
     public events: Events,
     public menu: MenuController,
-    // private ngZone: NgZone,
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    private authService: AuthService,
-    private completedTodoService: CompletedTodoService,
-    private currentTodoService: CurrentTodoService,
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
     this.initializeApp();
@@ -78,9 +63,6 @@ export class MyApp implements OnInit {
 
   ngOnInit() {
     console.log(`%s:ngOnInit`, this.CLASS_NAME);
-    // check login state.
-    //  firebase.auth().onAuthStateChanged((_currentUser) => {
-    // this.authService.init();
   }
 
   initializeApp() {
@@ -105,14 +87,8 @@ export class MyApp implements OnInit {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      /*
-            this.authService.replaySubject$.subscribe((user:CurrentUser) => {
-      console.log('>>>>>>>>>>>>>>app.component.ts: authService.replaySubject$>', user);
-            });
-      */
-      // This has to be done after platform.ready() else enableMenu() will
-      // not change menu.
-      this.setupAuthServiceSubscription();
+      this.enableMenu(true);
+      this.nav.setRoot(TodoListPage);
     });
   }
 
@@ -128,9 +104,11 @@ export class MyApp implements OnInit {
 
     if (page.logsOut === true) {
       // Give the menu time to close before changing to logged out
+      /*
       setTimeout(() => {
         this.authService.doLogout();
       }, 1000);
+      */
     }
   }
 
@@ -165,36 +143,5 @@ export class MyApp implements OnInit {
       return 'primary';
     }
     return;
-  }
-
-  private setupAuthServiceSubscription() {
-    this.authService.notifier$.subscribe((signedInUser: SignedInUser) => {
-      console.log('>>>>>>>>>>signedInUser>', signedInUser);
-      if (signedInUser) {
-        console.log(`%s: -- logged in --`, this.CLASS_NAME);
-        this.displayUserName = signedInUser.displayName;
-
-        this.enableMenu(true);
-        this.nav.setRoot(TodoListPage).catch(() => {
-          console.error('Didn\'t set nav root');
-        });
-
-        this.currentTodoService.startListening();
-        this.completedTodoService.startListening();
-      } else {
-        console.log(`%s: -- logged out --`, this.CLASS_NAME);
-        this.displayUserName = 'Not signed in';
-        this.enableMenu(false);
-        this.nav.setRoot(HomePage).catch(() => {
-          console.error('Didn\'t set nav root');
-        });
-        console.log(`%s: -- logged out 1--`, this.CLASS_NAME);
-        this.currentTodoService.stopListening();
-        console.log(`%s: -- logged out 2--`, this.CLASS_NAME);
-        this.completedTodoService.stopListening();
-        console.log(`%s: -- logged out 3 --`, this.CLASS_NAME);
-      }
-    });
-    // });
   }
 }

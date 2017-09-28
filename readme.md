@@ -1,12 +1,3 @@
-### src/app/my-firebase-app-config.ts
-``` typescript
-export const MyFirebaseAppConfig = {
-  apiKey: "XXXXXXX",
-  authDomain: "XXXXXXX",
-  databaseURL: "XXXXXXX",
-  storageBucket: "XXXXXXX",
-};
-```
 http://cordova.apache.org/announcements/2017/04/28/android-release.html
 
 #### upgrade
