@@ -1,5 +1,6 @@
 {
     "name": "ionic-todo-storage",
+    "version": "0.0.0",    
     "author": "tja",
     "homepage": "http://ionicframework.com/",
     "private": true,
